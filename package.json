@@ -1,15 +1,15 @@
 {
   "name": "fake-hydro",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "So you can pretend to be Hydro locally",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon src/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "peterbe",
   "license": "ISC",
   "dependencies": {
     "chalk": "5.2.0",
