@@ -7,6 +7,7 @@ import { JSONFile } from "lowdb/node";
 
 const app = express();
 const PORT = parseInt(process.env.PORT || "6666");
+const VERBOSE = Boolean(JSON.parse(process.env.VERBOSE || "false"));
 
 app.use(express.raw({ type: "*/*" }));
 
@@ -37,20 +38,13 @@ app.post("/*", (req, res) => {
       return res.status(403).send("Bad token");
     }
   }
+  printAggregates(db.data.events);
+
   console.log("Event incoming!");
   console.log(bodyData);
-
-  console.log("");
-  for (const [date, counts] of countSchemas(db.data.events)) {
-    console.log(
-      `Counts ${chalk.bold(date)} ${chalk.dim("(delete db.json to reset)")}`
-    );
-    for (const [schema, count] of Object.entries(counts)) {
-      console.log(
-        `  ${chalk.green(schema.padEnd(25))}  ${chalk.yellowBright(
-          `${count}`.padStart(4)
-        )}`
-      );
+  if (VERBOSE) {
+    for (const { value } of bodyData.events) {
+      console.log(JSON.parse(value));
     }
   }
 
@@ -63,9 +57,25 @@ app.post("/*", (req, res) => {
   db.write().then(() => {
     console.log("Reported into", DB_FILE);
   });
-  console.log(msg);
+  // console.log(msg);
   res.send(msg);
 });
+
+function printAggregates(events) {
+  console.log("");
+  for (const [date, counts] of countSchemas(events)) {
+    console.log(
+      `Counts ${chalk.bold(date)} ${chalk.dim("(delete db.json to reset)")}`
+    );
+    for (const [schema, count] of Object.entries(counts)) {
+      console.log(
+        `  ${chalk.green(schema.padEnd(25))}  ${chalk.yellowBright(
+          `${count}`.padStart(4)
+        )}`
+      );
+    }
+  }
+}
 
 function countSchemas(events) {
   const byDay = {};
@@ -82,9 +92,11 @@ function countSchemas(events) {
       count[schema] = (count[schema] || 0) + 1;
     }
   }
-  return Object.entries(byDay).sort((a, b) => a[0].localeCompare(b[0]));
+  // Display most recent day first
+  return Object.entries(byDay).sort((a, b) => b[0].localeCompare(a[0]));
 }
 
 app.listen(PORT, () => {
   console.log(`Fake Hydro app listening on port ${PORT}`);
+  printAggregates(db.data.events);
 });
