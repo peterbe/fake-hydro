@@ -4,10 +4,13 @@ import express from "express";
 import chalk from "chalk";
 import { Low } from "lowdb";
 import { JSONFile } from "lowdb/node";
+import cors from "cors";
 
 const app = express();
-const PORT = parseInt(process.env.PORT || "6666");
+const PORT = parseInt(process.env.PORT || "8089");
 const VERBOSE = Boolean(JSON.parse(process.env.VERBOSE || "false"));
+
+app.use(cors());
 
 app.use(express.raw({ type: "*/*" }));
 
