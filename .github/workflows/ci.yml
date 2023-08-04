@@ -1,0 +1,47 @@
+name: Test Node
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-node:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      # - name: Test
+      #   run: npm run test
+
+      - name: Run server
+        env:
+          PORT: 7777
+        run: |
+          npm run start > /tmp/stdout.log 2> /tmp/stderr.log &
+          sleep 2
+
+      - name: Ping server
+        run: curl --retry-connrefused --retry 4 http://localhost:7777/hello
+
+      - if: ${{ failure() }}
+        name: Debug server outputs on errors
+        run: |
+          echo "____STDOUT____"
+          cat /tmp/stdout.log
+          echo "____STDERR____"
+          cat /tmp/stderr.log
