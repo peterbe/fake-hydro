@@ -7,7 +7,7 @@ import { JSONFile } from "lowdb/node";
 import cors from "cors";
 
 const app = express();
-const PORT = parseInt(process.env.PORT || "6666");
+const PORT = parseInt(process.env.PORT || "7777");
 const VERBOSE = Boolean(JSON.parse(process.env.VERBOSE || "false"));
 
 // So we can use in client-side Hydro sending
@@ -36,7 +36,7 @@ app.post("/*", (req, res) => {
     const token = createHmac("sha256", secret).update(req.body).digest("hex");
     if (req.headers.authorization !== `Hydro ${token}`) {
       console.warn(
-        chalk.red(`authorization header does not match '${secret}'`),
+        chalk.red(`authorization header does not match '${secret}'`)
       );
       return res.status(403).send("Bad token");
     }
@@ -68,13 +68,13 @@ function printAggregates(events) {
   console.log("");
   for (const [date, counts] of countSchemas(events)) {
     console.log(
-      `Counts ${chalk.bold(date)} ${chalk.dim("(delete db.json to reset)")}`,
+      `Counts ${chalk.bold(date)} ${chalk.dim("(delete db.json to reset)")}`
     );
     for (const [schema, count] of Object.entries(counts)) {
       console.log(
         `  ${chalk.green(schema.padEnd(25))}  ${chalk.yellowBright(
-          `${count}`.padStart(4),
-        )}`,
+          `${count}`.padStart(4)
+        )}`
       );
     }
   }
