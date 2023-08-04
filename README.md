@@ -3,7 +3,7 @@
 Now you can put
 
 ```sh
-HYDRO_ENDPOINT=http://localhost:6666/hydro/api/v1/events
+HYDRO_ENDPOINT=http://localhost:7777/hydro/api/v1/events
 HYDRO_SECRET=blablablablabla
 ```
 

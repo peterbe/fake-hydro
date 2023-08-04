@@ -7,7 +7,7 @@ import { JSONFile } from "lowdb/node";
 import cors from "cors";
 
 const app = express();
-const PORT = parseInt(process.env.PORT || "6666");
+const PORT = parseInt(process.env.PORT || "7777");
 const VERBOSE = Boolean(JSON.parse(process.env.VERBOSE || "false"));
 
 // So we can use in client-side Hydro sending
