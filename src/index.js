@@ -36,14 +36,14 @@ app.post("/*", (req, res) => {
     const token = createHmac("sha256", secret).update(req.body).digest("hex");
     if (req.headers.authorization !== `Hydro ${token}`) {
       console.warn(
-        chalk.red(`authorization header does not match '${secret}'`),
+        chalk.red(`authorization header does not match '${secret}'`)
       );
       return res.status(403).send("Bad token");
     }
   }
   printAggregates(db.data.events);
 
-  console.log("Event incoming!");
+  console.log("Event incoming", new Date());
   console.log(bodyData);
   if (VERBOSE) {
     for (const { value } of bodyData.events) {
@@ -58,7 +58,7 @@ app.post("/*", (req, res) => {
   });
 
   db.write().then(() => {
-    console.log("Reported into", DB_FILE);
+    console.log("Reported into", DB_FILE, new Date());
   });
   // console.log(msg);
   res.send(msg);
@@ -68,13 +68,13 @@ function printAggregates(events) {
   console.log("");
   for (const [date, counts] of countSchemas(events)) {
     console.log(
-      `Counts ${chalk.bold(date)} ${chalk.dim("(delete db.json to reset)")}`,
+      `Counts ${chalk.bold(date)} ${chalk.dim("(delete db.json to reset)")}`
     );
     for (const [schema, count] of Object.entries(counts)) {
       console.log(
         `  ${chalk.green(schema.padEnd(25))}  ${chalk.yellowBright(
-          `${count}`.padStart(4),
-        )}`,
+          `${count}`.padStart(4)
+        )}`
       );
     }
   }
