@@ -4,6 +4,7 @@ import express from "express";
 import chalk from "chalk";
 import { Low } from "lowdb";
 import { JSONFile } from "lowdb/node";
+// import { JSONFilePreset } from "lowdb/node";
 import cors from "cors";
 
 const app = express();
@@ -51,16 +52,15 @@ app.post("/*", (req, res) => {
     }
   }
 
-  db.data.events.push({
-    uri: req.url.slice(1),
-    date: new Date(),
-    body: bodyData,
-  });
-
-  db.write().then(() => {
+  db.update(({ events }) => {
+    events.push({
+      uri: req.url.slice(1),
+      date: new Date(),
+      body: bodyData,
+    });
     console.log("Reported into", DB_FILE, new Date());
   });
-  // console.log(msg);
+
   res.send(msg);
 });
 
