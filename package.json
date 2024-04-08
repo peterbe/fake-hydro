@@ -17,7 +17,7 @@
     "chalk": "5.3.0",
     "cors": "2.8.5",
     "express": "4.19.2",
-    "lowdb": "6.1.1"
+    "lowdb": "7.0.1"
   },
   "devDependencies": {
     "nodemon": "3.1.0",
