@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "prettier --check src/*.js",
     "lint:fix": "prettier --write src/*.js",
+    "clear": "node src/clear.js",
     "start": "nodemon src/index.js"
   },
   "keywords": [],
