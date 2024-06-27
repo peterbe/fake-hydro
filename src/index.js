@@ -16,7 +16,7 @@ if (process.env.HIGHLIGHT) {
   HIGHLIGHT.push(
     ...process.env.HIGHLIGHT.split(",")
       .map((s) => s.trim())
-      .filter(Boolean)
+      .filter(Boolean),
   );
 }
 HIGHLIGHT.push(...process.argv.slice(2));
@@ -24,8 +24,8 @@ HIGHLIGHT.push(...process.argv.slice(2));
 if (HIGHLIGHT.length) {
   console.log(
     chalk.yellow(
-      `\nHighlighting specifically: ${HIGHLIGHT.map((x) => util.inspect(x))}\n`
-    )
+      `\nHighlighting specifically: ${HIGHLIGHT.map((x) => util.inspect(x))}\n`,
+    ),
   );
 }
 
@@ -36,7 +36,7 @@ function highlightEvents(events) {
   for (const event of events) {
     if (
       HIGHLIGHT.find((highlight) =>
-        event.schema.toLowerCase().includes(highlight.toLowerCase())
+        event.schema.toLowerCase().includes(highlight.toLowerCase()),
       )
     ) {
       return true;
@@ -71,7 +71,7 @@ app.post("/*", (req, res) => {
     const token = createHmac("sha256", secret).update(req.body).digest("hex");
     if (req.headers.authorization !== `Hydro ${token}`) {
       console.warn(
-        chalk.red(`authorization header does not match '${secret}'`)
+        chalk.red(`authorization header does not match '${secret}'`),
       );
       return res.status(403).send("Bad token");
     }
@@ -102,13 +102,13 @@ function printAggregates(events) {
   console.log("");
   for (const [date, counts] of countSchemas(events)) {
     console.log(
-      `Counts ${chalk.bold(date)} ${chalk.dim("(delete db.json to reset)")}`
+      `Counts ${chalk.bold(date)} ${chalk.dim("(delete db.json to reset)")}`,
     );
     for (const [schema, count] of Object.entries(counts)) {
       console.log(
         `  ${chalk.green(schema.padEnd(25))}  ${chalk.yellowBright(
-          `${count}`.padStart(4)
-        )}`
+          `${count}`.padStart(4),
+        )}`,
       );
     }
   }
